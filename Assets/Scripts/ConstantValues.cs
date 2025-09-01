@@ -1,0 +1,13 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public static class ConstantValues
+{
+    public const int CMD_REQUEST_CHECK_PASSWORD = 2000;
+    public const int CMD_RESPONSE_CHECK_PASSWORD_RESULT = 2001;
+    public const int CMD_REQUEST_GET_STUDIO_DATA = 2002;
+    public const int CMD_RESPONSE_GET_STUDIO_DATA = 2003;
+    public const int CMD_REQUEST_ADD_EDITOR_DATA = 2004;
+    public const int CMD_RESPONSE_ADD_EDITOR_DATA = 2005;
+}

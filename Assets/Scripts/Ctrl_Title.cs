@@ -4,16 +4,21 @@ using UnityEngine;
 
 public class Ctrl_Title : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        Debug.Log("Client is Available? " + Client.Instance == null);
     }
-
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Client.Instance.RequestCheckPassword(2848);
+        }
+
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            Client.Instance.RequestCheckPassword(9999);
+        }
     }
 
     public void OnClickDigitButton(int num)
