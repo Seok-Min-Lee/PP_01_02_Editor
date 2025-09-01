@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PasswordDigit : MonoBehaviour
 {
-    public string Value
+    public string Value 
     { 
         get 
         {
@@ -16,7 +16,7 @@ public class PasswordDigit : MonoBehaviour
 
     private Animation animation;
     private CanvasGroup canvasGroup;
-    private void Start()
+    private void Awake()
     {
         text.text = string.Empty;
         animation = text.GetComponent<Animation>();

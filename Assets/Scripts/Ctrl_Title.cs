@@ -76,4 +76,8 @@ public class Ctrl_Title : MonoBehaviour
             Debug.Log("Fail :: " + pwStr);
         }
     }
+    public void NextScene()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("02_Select");
+    }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -64,10 +65,10 @@ public class Client : MonoSingleton<Client>
                 ReceiveCheckPasswordResult(message: ref messageBytes);
                 break;
             case ConstantValues.CMD_RESPONSE_GET_STUDIO_DATA:
-                ReceiveStudioData(message: ref messageBytes);
+                ReceiveGetStudioData(message: ref messageBytes);
                 break;
             case ConstantValues.CMD_RESPONSE_ADD_EDITOR_DATA:
-                ReceiveResult(message: ref messageBytes);
+                ReceiveAddEditorDataResult(message: ref messageBytes);
                 break;
             default:
                 break;
@@ -76,67 +77,78 @@ public class Client : MonoSingleton<Client>
 
     public void RequestCheckPassword(int password)
     {
-        List<byte> messages = new List<byte>();
-        messages.AddRange(BitConverter.GetBytes(ConstantValues.CMD_REQUEST_CHECK_PASSWORD));
-        messages.AddRange(BitConverter.GetBytes(password));
+        using (MemoryStream ms = new MemoryStream())
+        using (BinaryWriter bw = new BinaryWriter(ms))
+        {
+            bw.Write(ConstantValues.CMD_REQUEST_CHECK_PASSWORD);
+            bw.Write(password);
 
-        client.Send(messages.ToArray());
-        Debug.Log("RequestCheckPassword::" + password);
+            client.Send(ms.ToArray());
+        }
+
+        Debug.Log($"Request Check Password::{password}");
     }
-    public void RequestStudioData(int password)
+    public void RequestGetStudioData(int password)
     {
-        List<byte> messages = new List<byte>();
-        messages.AddRange(BitConverter.GetBytes(ConstantValues.CMD_REQUEST_GET_STUDIO_DATA));
-        messages.AddRange(BitConverter.GetBytes(password));
+        using (MemoryStream ms = new MemoryStream())
+        using (BinaryWriter bw = new BinaryWriter(ms))
+        {
+            bw.Write(ConstantValues.CMD_REQUEST_GET_STUDIO_DATA);
+            bw.Write(password);
 
-        client.Send(messages.ToArray());
-        Debug.Log("Request Studio Data");
+            client.Send(ms.ToArray());
+        }
+
+        Debug.Log($"Request Get Studio Data::{password}");
     }
-    public void SendEditorData()
+    public void RequestAddEditorData()
     {
         client.Send(BitConverter.GetBytes(ConstantValues.CMD_REQUEST_ADD_EDITOR_DATA));
-        Debug.Log("SendEditorData");
+        Debug.Log("Request Add Editor Data");
     }
     private void ReceiveCheckPasswordResult(ref byte[] message)
     {
         byte[] resultBytes = new byte[1];
-        Array.Copy(message, 4, resultBytes, 0, 1);
+        Buffer.BlockCopy(message, 4, resultBytes, 0, 1);
         bool result = BitConverter.ToBoolean(resultBytes);
 
-        Debug.Log("ReceivePassword::" + result);
+        Debug.Log($"Receive Check Password Result::{result}");
+
         if (result)
         {
-            RequestStudioData(StaticValues.password);
+            GameObject.Find("Ctrl").GetComponent<Ctrl_Title>().NextScene();
+            RequestGetStudioData(StaticValues.password);
         }
     }
-    private void ReceiveStudioData(ref byte[] message)
+    private void ReceiveGetStudioData(ref byte[] message)
     {
         byte[] headerLengthBytes = new byte[4];
-        Array.Copy(message, 4, headerLengthBytes, 0, 4);
+        Buffer.BlockCopy(message, 4, headerLengthBytes, 0, 4);
         int headerLength = BitConverter.ToInt32(headerLengthBytes);
 
         byte[] headerBytes = new byte[headerLength];
-        Array.Copy(message, 8, headerBytes, 0, headerLength);
+        Buffer.BlockCopy(message, 8, headerBytes, 0, headerLength);
         string headerStr = Encoding.UTF8.GetString(headerBytes);
 
         StudioDataRaw.Header header = JsonUtility.FromJson<StudioDataRaw.Header>(headerStr);
 
         byte[] textureBytes = new byte[header.TextureLength];
-        Array.Copy(message, 8 + headerLength, textureBytes, 0, header.TextureLength);
+        Buffer.BlockCopy(message, 8 + headerLength, textureBytes, 0, header.TextureLength);
 
-        StaticValues.studioDataRaw = new StudioDataRaw(
+        StudioDataRaw raw = new StudioDataRaw(
             id: header.Id, 
             password: header.Password, 
             registerDateTime: header.RegisterDateTime, 
             textureRaw: textureBytes
         );
+        StaticValues.studioDataRaw = raw;
 
-        Debug.Log("ReceiveStudioData" + StaticValues.studioDataRaw.ToString());
+        Debug.Log($"Receive Get Studio Data::{raw.ToString()}");
 
         GameObject.Find("Ctrl").GetComponent<Ctrl_Select>().Init();
     }
-    private void ReceiveResult(ref byte[] message)
+    private void ReceiveAddEditorDataResult(ref byte[] message)
     {
-        Debug.Log("ReceiveResult");
+        Debug.Log($"Receive Add Editor Data Result::");
     }
 }

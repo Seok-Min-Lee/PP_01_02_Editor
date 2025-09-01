@@ -15,7 +15,7 @@ public class Ctrl_Select : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            Client.Instance.RequestStudioData(3932);
+            Client.Instance.RequestGetStudioData(3936);
         }
     }
     public void Init()
