@@ -68,6 +68,7 @@ public class Ctrl_Title : MonoBehaviour
 
         if (int.TryParse(pwStr, out int pw))
         {
+            StaticValues.password = pw;
             Client.Instance.RequestCheckPassword(pw);
         }
         else
