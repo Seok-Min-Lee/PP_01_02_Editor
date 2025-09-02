@@ -6,4 +6,5 @@ public static class StaticValues
 {
     public static int password;
     public static StudioDataRaw studioDataRaw;
+    public static int filterNo;
 }

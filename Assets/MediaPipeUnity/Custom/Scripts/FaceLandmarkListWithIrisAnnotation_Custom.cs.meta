@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 5b1ee93c2768a1748be15262e55d0db2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _faceLandmarkListAnnotation: {instanceID: 0}
+  - _leftIrisLandmarkListAnnotation: {instanceID: 0}
+  - _rightIrisLandmarkListAnnotation: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
