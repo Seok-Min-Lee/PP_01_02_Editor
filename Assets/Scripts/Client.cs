@@ -101,10 +101,18 @@ public class Client : MonoSingleton<Client>
 
         Debug.Log($"Request Get Studio Data::{password}");
     }
-    public void RequestAddEditorData()
+    public void RequestAddEditorData(EditorDataRaw editorDataRaw)
     {
-        client.Send(BitConverter.GetBytes(ConstantValues.CMD_REQUEST_ADD_EDITOR_DATA));
-        Debug.Log("Request Add Editor Data");
+        using (MemoryStream ms = new MemoryStream())
+        using (BinaryWriter bw = new BinaryWriter(ms))
+        {
+            bw.Write(ConstantValues.CMD_REQUEST_ADD_EDITOR_DATA);
+            bw.Write(editorDataRaw.ToBytes());
+
+            client.Send(ms.ToArray());
+        }
+
+        Debug.Log($"Request Add Editor Data::{editorDataRaw.ToString()}");
     }
     private void ReceiveCheckPasswordResult(ref byte[] message)
     {
@@ -149,6 +157,15 @@ public class Client : MonoSingleton<Client>
     }
     private void ReceiveAddEditorDataResult(ref byte[] message)
     {
-        Debug.Log($"Receive Add Editor Data Result::");
+        byte[] resultBytes = new byte[1];
+        Buffer.BlockCopy(message, 4, resultBytes, 0, 1);
+        bool result = BitConverter.ToBoolean(resultBytes);
+
+        Debug.Log($"Receive Add Editor Data Result::{result}");
+
+        if (result)
+        {
+            GameObject.Find("Ctrl").GetComponent<Ctrl_Edit>().Finish();
+        }
     }
 }

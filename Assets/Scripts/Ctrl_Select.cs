@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class Ctrl_Select : MonoBehaviour
 {
     [SerializeField] private RawImage studioImage;
+    [SerializeField] private FilterButton[] filterButtons;
+    private int filterNo = -1;
     private void Start()
     {
         Debug.Log("Client is Available? " + Client.Instance == null);
@@ -13,10 +15,29 @@ public class Ctrl_Select : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A))
+    }
+    public void OnClickHome()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("01_Title");
+    }
+    public void OnClickSelect()
+    {
+        if (filterNo == -1)
         {
-            Client.Instance.RequestGetStudioData(3936);
+            return;
         }
+
+        StaticValues.filterNo = filterNo;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("03_Edit");
+    }
+    public void OnClickFilter(int num)
+    {
+        for (int i = 0; i < filterButtons.Length; i++)
+        {
+            filterButtons[i].Highlight(i == num);
+        }
+
+        filterNo = num;
     }
     public void Init()
     {

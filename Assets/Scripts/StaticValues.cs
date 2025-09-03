@@ -4,7 +4,8 @@ using UnityEngine;
 
 public static class StaticValues
 {
-    public static int password;
-    public static StudioDataRaw studioDataRaw;
-    public static int filterNo;
+    public static int password = -1;
+    public static StudioDataRaw studioDataRaw = null;
+    public static int filterNo = -1;
+    public static EditorDataRaw editorDataRaw = null;
 }
