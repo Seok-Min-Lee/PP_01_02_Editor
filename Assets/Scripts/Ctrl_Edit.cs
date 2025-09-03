@@ -7,15 +7,18 @@ using UnityEngine.UI;
 public class Ctrl_Edit : MonoBehaviour
 {
     [SerializeField] private RawImage baseImage;
+    [SerializeField] private RectTransform baseImageRT;
+    [SerializeField] private RectTransform editImageRT;
+    [SerializeField] private CanvasGroup textGroupCG;
 
-    [SerializeField] private Texture2D[] faceFilterTextures;
-
+    [SerializeField] private Texture2D[] faceFilterSamples;
     [SerializeField] private Material faceFilterMaterial;
+    [SerializeField] private RawImage faceBaseImage;
     [SerializeField] private FaceLandmarkerRunner_Custom runner;
-
     [SerializeField] private RenderTexture rTex;
 
-    Texture2D sampleTexture;
+    private List<Texture2D> faceFilterTextures;
+    private Texture2D sampleTexture;
     private void Start()
     {
         Debug.Log("Client is Available? " + Client.Instance == null);
@@ -27,6 +30,12 @@ public class Ctrl_Edit : MonoBehaviour
         sampleTexture = new Texture2D(0, 0, TextureFormat.RGBA32, false);
         sampleTexture.LoadImage(textureRaw);
         sampleTexture.wrapMode = TextureWrapMode.Clamp;
+
+        faceFilterTextures = new List<Texture2D>();
+        for (int i = 0; i < faceFilterSamples.Length; i++)
+        {
+            faceFilterTextures.Add(FlipTextureVertically(faceFilterSamples[i]));
+        }
 
         faceFilterMaterial.mainTexture = faceFilterTextures[StaticValues.filterNo];
     }
@@ -43,8 +52,8 @@ public class Ctrl_Edit : MonoBehaviour
         runner.screen.GetComponent<AutoFit_Custom>().Refresh();
 
         baseImage.texture = texture;
+        faceBaseImage.texture = texture;
 
-        GameObject.Find("Face Base Image").GetComponent<RawImage>().texture = texture;
         Invoke("SendEditorDataRaw", 1f);
     }
     public void Finish()
@@ -131,7 +140,18 @@ public class Ctrl_Edit : MonoBehaviour
 
         return texture;
     }
-    [SerializeField] private RectTransform baseImageRT;
-    [SerializeField] private RectTransform editImageRT;
-    [SerializeField] private CanvasGroup textGroupCG;
+    private Texture2D FlipTextureVertically(Texture2D original)
+    {
+        Texture2D flipped = new Texture2D(original.width, original.height, TextureFormat.ARGB32, false);
+        Color[] originalPixels = original.GetPixels();
+
+        for (int y = 0; y < original.height; y++)
+        {
+            Color[] row = original.GetPixels(0, y, original.width, 1);
+            flipped.SetPixels(0, original.height - 1 - y, original.width, 1, row);
+        }
+
+        flipped.Apply();
+        return flipped;
+    }
 }
