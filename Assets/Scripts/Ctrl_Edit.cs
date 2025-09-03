@@ -45,7 +45,7 @@ public class Ctrl_Edit : MonoBehaviour
         baseImage.texture = texture;
 
         GameObject.Find("Face Base Image").GetComponent<RawImage>().texture = texture;
-        SendEditorDataRaw();
+        Invoke("SendEditorDataRaw", 1f);
     }
     public void Finish()
     {
