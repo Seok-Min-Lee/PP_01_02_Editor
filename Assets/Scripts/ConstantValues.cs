@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class ConstantValues
 {
+    public const int TIME_LIMIT_DEFAULT = 20;
+
     public const int CMD_REQUEST_CHECK_PASSWORD = 2000;
     public const int CMD_RESPONSE_CHECK_PASSWORD_RESULT = 2001;
     public const int CMD_REQUEST_GET_STUDIO_DATA = 2002;

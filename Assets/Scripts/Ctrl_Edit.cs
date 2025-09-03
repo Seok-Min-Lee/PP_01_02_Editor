@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public class Ctrl_Edit : MonoBehaviour
 {
+
     [SerializeField] private RawImage baseImage;
     [SerializeField] private RectTransform baseImageRT;
     [SerializeField] private RectTransform editImageRT;
@@ -17,10 +18,17 @@ public class Ctrl_Edit : MonoBehaviour
     [SerializeField] private FaceLandmarkerRunner_Custom runner;
     [SerializeField] private RenderTexture rTex;
 
+    [SerializeField] private Image timebarGuage;
+
+    private float timer = 0f;
+    private int timeLimit;
+
     private List<Texture2D> faceFilterTextures;
     private Texture2D sampleTexture;
     private void Start()
     {
+        timeLimit = ConstantValues.TIME_LIMIT_DEFAULT;
+
         Debug.Log("Client is Available? " + Client.Instance == null);
 
         byte[] textureRaw = StaticValues.studioDataRaw != null ? 
@@ -38,6 +46,21 @@ public class Ctrl_Edit : MonoBehaviour
         }
 
         faceFilterMaterial.mainTexture = faceFilterTextures[StaticValues.filterNo];
+    }
+    private void Update()
+    {
+        if (Input.anyKey)
+        {
+            timer = 0f;
+        }
+
+        timer += Time.deltaTime;
+        timebarGuage.fillAmount = 1 - (timer / timeLimit);
+
+        if (timer > timeLimit)
+        {
+            OnClickHome();
+        }
     }
     public void OnClickHome()
     {

@@ -7,14 +7,34 @@ public class Ctrl_Select : MonoBehaviour
 {
     [SerializeField] private RawImage studioImage;
     [SerializeField] private FilterButton[] filterButtons;
+
+    [SerializeField] private Image timebarGuage;
+
+    private float timer = 0f;
+    private int timeLimit;
+
     private int filterNo = -1;
     private void Start()
     {
+        timeLimit = ConstantValues.TIME_LIMIT_DEFAULT;
+
         Debug.Log("Client is Available? " + Client.Instance == null);
     }
 
     private void Update()
     {
+        if (Input.anyKey)
+        {
+            timer = 0f;
+        }
+
+        timer += Time.deltaTime;
+        timebarGuage.fillAmount = 1 - (timer / timeLimit);
+
+        if (timer > timeLimit)
+        {
+            OnClickHome();
+        }
     }
     public void OnClickHome()
     {

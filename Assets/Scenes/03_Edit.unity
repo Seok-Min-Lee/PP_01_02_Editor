@@ -166,6 +166,7 @@ MonoBehaviour:
   faceBaseImage: {fileID: 999366377}
   runner: {fileID: 1048145978}
   rTex: {fileID: 8400000, guid: 88008ef93947e0447ab6e75586db8be4, type: 2}
+  timebarGuage: {fileID: 2000443932}
 --- !u!4 &19469753
 Transform:
   m_ObjectHideFlags: 0

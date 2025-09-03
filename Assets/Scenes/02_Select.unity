@@ -353,6 +353,7 @@ MonoBehaviour:
   - {fileID: 1951552932}
   - {fileID: 2027455474}
   - {fileID: 1527477235}
+  timebarGuage: {fileID: 833831237}
 --- !u!1 &391739083
 GameObject:
   m_ObjectHideFlags: 0
