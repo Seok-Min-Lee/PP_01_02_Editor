@@ -66,6 +66,12 @@ public class Ctrl_Edit : MonoBehaviour
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("01_Title");
     }
+    public void OnClickRetry()
+    {
+        StaticValues.filterNo = -1;
+        StaticValues.editorDataRaw = null;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("02_Select");
+    }
     public void DrawMagazine()
     {
         Texture2D texture = sampleTexture;

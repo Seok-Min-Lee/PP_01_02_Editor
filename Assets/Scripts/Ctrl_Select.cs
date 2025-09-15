@@ -19,6 +19,8 @@ public class Ctrl_Select : MonoBehaviour
         timeLimit = ConstantValues.TIME_LIMIT_DEFAULT;
 
         Debug.Log("Client is Available? " + Client.Instance == null);
+
+        Init();
     }
 
     private void Update()

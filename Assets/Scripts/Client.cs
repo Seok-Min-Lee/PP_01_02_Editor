@@ -124,8 +124,11 @@ public class Client : MonoSingleton<Client>
 
         if (result)
         {
-            GameObject.Find("Ctrl").GetComponent<Ctrl_Title>().NextScene();
             RequestGetStudioData(StaticValues.password);
+        }
+        else
+        {
+            GameObject.Find("Ctrl").GetComponent<Ctrl_Title>().FailPassword();
         }
     }
     private void ReceiveGetStudioData(ref byte[] message)
@@ -153,7 +156,14 @@ public class Client : MonoSingleton<Client>
 
         Debug.Log($"Receive Get Studio Data::{raw.ToString()}");
 
-        GameObject.Find("Ctrl").GetComponent<Ctrl_Select>().Init();
+        if (raw.TextureRaw.Length > 0)
+        {
+            GameObject.Find("Ctrl").GetComponent<Ctrl_Title>().NextScene();
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("99_Error");
+        }
     }
     private void ReceiveAddEditorDataResult(ref byte[] message)
     {
@@ -166,6 +176,10 @@ public class Client : MonoSingleton<Client>
         if (result)
         {
             GameObject.Find("Ctrl").GetComponent<Ctrl_Edit>().Finish();
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("99_Error");
         }
     }
 }

@@ -12,6 +12,8 @@ public class Ctrl_Title : MonoBehaviour
     {
         Debug.Log("Client is Available? " + Client.Instance == null);
 
+        StaticValues.Init();
+
         digits[0].SetFocus();
     }
     private void Update()
@@ -75,6 +77,18 @@ public class Ctrl_Title : MonoBehaviour
         {
             Debug.Log("Fail :: " + pwStr);
         }
+    }
+    [SerializeField] private ErrorPopup errorPopup;
+    public void FailPassword()
+    {
+        cursorIndex = 0;
+
+        digits[0].SetFocus();
+        digits[1].SetText("");
+        digits[2].SetText("");
+        digits[3].SetText("");
+
+        errorPopup.Open();
     }
     public void NextScene()
     {
