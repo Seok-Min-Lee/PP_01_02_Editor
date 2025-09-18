@@ -21,7 +21,7 @@ public class Client : MonoSingleton<Client>
         Telepathy.Log.Error = Debug.LogError;
 
         // hook up events
-        client.OnConnected = () => Debug.Log("Client Connected");
+        client.OnConnected = () => OnConnected();
         client.OnData = (message) => ReceiveMessage(message);
         client.OnDisconnected = () => Debug.Log("Client Disconnected");
     }
@@ -31,7 +31,7 @@ public class Client : MonoSingleton<Client>
         {
             // tick to process messages
             // (even if not connected so we still process disconnect messages)
-            client.Tick(10);
+            client.Tick(1000);
         }
         else
         {
@@ -45,6 +45,18 @@ public class Client : MonoSingleton<Client>
         // running them in the Editor. they would only quit when we press Play
         // again later. this is fine, but let's shut them down here for consistency
         client.Disconnect();
+    }
+    private void OnConnected()
+    {
+        Debug.Log("Client Connected");
+
+        using (MemoryStream ms = new MemoryStream())
+        using (BinaryWriter bw = new BinaryWriter(ms))
+        {
+            bw.Write(ConstantValues.CMD_REQUEST_CONNECT_EDITOR);
+
+            client.Send(ms.ToArray());
+        }
     }
     public void ReceiveMessage(ArraySegment<byte> message)
     {
