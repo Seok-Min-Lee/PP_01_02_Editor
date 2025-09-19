@@ -75,7 +75,7 @@ public class Ctrl_Title : MonoBehaviour
         }
         else
         {
-            Debug.Log("Fail :: " + pwStr);
+            Debug.Log($"Fail::{pwStr}");
         }
     }
     [SerializeField] private ErrorPopup errorPopup;

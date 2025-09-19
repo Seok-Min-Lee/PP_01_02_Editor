@@ -31,6 +31,7 @@ public class Ctrl_Edit : MonoBehaviour
 
         Debug.Log("Client is Available? " + Client.Instance == null);
 
+        //
         byte[] textureRaw = StaticValues.studioDataRaw != null ? 
             StaticValues.studioDataRaw.TextureRaw :
             System.IO.File.ReadAllBytes("C:/Users/dltjr/Desktop/»õ Æú´õ (2)/8.jpeg");
@@ -39,6 +40,7 @@ public class Ctrl_Edit : MonoBehaviour
         sampleTexture.LoadImage(textureRaw);
         sampleTexture.wrapMode = TextureWrapMode.Clamp;
 
+        //
         faceFilterTextures = new List<Texture2D>();
         for (int i = 0; i < faceFilterSamples.Length; i++)
         {

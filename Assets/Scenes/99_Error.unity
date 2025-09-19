@@ -853,7 +853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da125843c17f22b468d3f859eff467da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timebarGuage: {fileID: 0}
+  timebarGuage: {fileID: 2000443932}
 --- !u!4 &1787909457
 Transform:
   m_ObjectHideFlags: 0

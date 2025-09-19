@@ -9,6 +9,11 @@ public class Client : MonoSingleton<Client>
 {
     public Telepathy.Client client = new Telepathy.Client(1920 * 1080 + 1024);
 
+    private Ctrl_Title titleCtrl => _titleCtrl ??= FindObjectOfType<Ctrl_Title>();
+    private Ctrl_Title _titleCtrl;
+
+    private Ctrl_Edit editCtrl => _editCtrl ??= FindObjectOfType<Ctrl_Edit>();
+    private Ctrl_Edit _editCtrl;
 
     private void Awake()
     {
@@ -58,7 +63,7 @@ public class Client : MonoSingleton<Client>
             client.Send(ms.ToArray());
         }
     }
-    public void ReceiveMessage(ArraySegment<byte> message)
+    private void ReceiveMessage(ArraySegment<byte> message)
     {
         // clear previous message
         byte[] messageBytes = new byte[message.Count];
@@ -128,23 +133,26 @@ public class Client : MonoSingleton<Client>
     }
     private void ReceiveCheckPasswordResult(ref byte[] message)
     {
+        // Receive Data
         byte[] resultBytes = new byte[1];
         Buffer.BlockCopy(message, 4, resultBytes, 0, 1);
         bool result = BitConverter.ToBoolean(resultBytes);
 
         Debug.Log($"Receive Check Password Result::{result}");
 
+        // React by result
         if (result)
         {
             RequestGetStudioData(StaticValues.password);
         }
         else
         {
-            GameObject.Find("Ctrl").GetComponent<Ctrl_Title>().FailPassword();
+            titleCtrl.FailPassword();
         }
     }
     private void ReceiveGetStudioData(ref byte[] message)
     {
+        // Receive Data
         byte[] headerLengthBytes = new byte[4];
         Buffer.BlockCopy(message, 4, headerLengthBytes, 0, 4);
         int headerLength = BitConverter.ToInt32(headerLengthBytes);
@@ -153,6 +161,7 @@ public class Client : MonoSingleton<Client>
         Buffer.BlockCopy(message, 8, headerBytes, 0, headerLength);
         string headerStr = Encoding.UTF8.GetString(headerBytes);
 
+        // Data Parsing
         StudioDataRaw.Header header = JsonUtility.FromJson<StudioDataRaw.Header>(headerStr);
 
         byte[] textureBytes = new byte[header.TextureLength];
@@ -168,9 +177,10 @@ public class Client : MonoSingleton<Client>
 
         Debug.Log($"Receive Get Studio Data::{raw.ToString()}");
 
+        // Load Scene
         if (raw.TextureRaw.Length > 0)
         {
-            GameObject.Find("Ctrl").GetComponent<Ctrl_Title>().NextScene();
+            titleCtrl.NextScene();
         }
         else
         {
@@ -179,15 +189,17 @@ public class Client : MonoSingleton<Client>
     }
     private void ReceiveAddEditorDataResult(ref byte[] message)
     {
+        // Receive Data
         byte[] resultBytes = new byte[1];
         Buffer.BlockCopy(message, 4, resultBytes, 0, 1);
         bool result = BitConverter.ToBoolean(resultBytes);
 
         Debug.Log($"Receive Add Editor Data Result::{result}");
 
+        // React by result
         if (result)
         {
-            GameObject.Find("Ctrl").GetComponent<Ctrl_Edit>().Finish();
+            editCtrl.Finish();
         }
         else
         {
