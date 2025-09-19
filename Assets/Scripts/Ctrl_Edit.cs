@@ -145,11 +145,11 @@ public class Ctrl_Edit : MonoBehaviour
             id: -1,
             password: StaticValues.password,
             filterNo: StaticValues.filterNo,
-            isDisplayed: false,
+            stateNo: -1,
             registerDateTime: string.Empty,
+            releaseDateTime: string.Empty,
             displayDateTime: string.Empty,
-            textureRaw: tex.EncodeToJPG(),
-            studioId: -1
+            textureRaw: tex.EncodeToJPG()
         );
 
         StaticValues.editorDataRaw = edr;
