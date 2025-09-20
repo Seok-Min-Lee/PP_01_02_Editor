@@ -9,10 +9,32 @@ public class Client : MonoSingleton<Client>
 {
     public Telepathy.Client client = new Telepathy.Client(1920 * 1080 + 1024);
 
-    private Ctrl_Title titleCtrl => _titleCtrl ??= FindObjectOfType<Ctrl_Title>();
+    private Ctrl_Title titleCtrl
+    {
+        get
+        {
+            if (_titleCtrl == null)
+            {
+                _titleCtrl = FindObjectOfType<Ctrl_Title>();
+            }
+
+            return _titleCtrl;
+        }
+    }
     private Ctrl_Title _titleCtrl;
 
-    private Ctrl_Edit editCtrl => _editCtrl ??= FindObjectOfType<Ctrl_Edit>();
+    private Ctrl_Edit editCtrl
+    {
+        get
+        {
+            if (_editCtrl == null)
+            {
+                _editCtrl = FindObjectOfType<Ctrl_Edit>();
+            }
+
+            return _editCtrl;
+        }
+    }
     private Ctrl_Edit _editCtrl;
 
     private void Awake()
