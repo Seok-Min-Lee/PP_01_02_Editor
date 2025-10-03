@@ -1,0 +1,2 @@
+remote:[[:space:]]error:[[:space:]]File[[:space:]]Packages/com.github.homuler.mediapipe/Runtime/Plugins/iOS/Me
+diaPipeUnity.framework/MediaPipeUnity filter=lfs diff=lfs merge=lfs -text
