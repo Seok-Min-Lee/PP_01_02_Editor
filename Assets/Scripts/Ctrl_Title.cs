@@ -33,6 +33,8 @@ public class Ctrl_Title : MonoBehaviour
 
     public void OnClickDigitButton(int num)
     {
+        AudioManager.Instance.PlaySFX(Sound.Key.Click);
+
         if (cursorIndex == digits.Length) 
         { 
             return;
@@ -47,6 +49,8 @@ public class Ctrl_Title : MonoBehaviour
     }
     public void OnClickRemove()
     {
+        AudioManager.Instance.PlaySFX(Sound.Key.Click);
+
         if (cursorIndex == 0)
         {
             return;
@@ -61,6 +65,8 @@ public class Ctrl_Title : MonoBehaviour
     }
     public void OnClickSubmit()
     {
+        AudioManager.Instance.PlaySFX(Sound.Key.Click);
+
         string pwStr = string.Empty;
 
         for (int i = 0; i < digits.Length; i++)

@@ -40,10 +40,13 @@ public class Ctrl_Select : MonoBehaviour
     }
     public void OnClickHome()
     {
+        AudioManager.Instance.PlaySFX(Sound.Key.Click);
         UnityEngine.SceneManagement.SceneManager.LoadScene("01_Title");
     }
     public void OnClickSelect()
     {
+        AudioManager.Instance.PlaySFX(Sound.Key.Click);
+
         if (filterNo == -1)
         {
             return;
@@ -54,6 +57,8 @@ public class Ctrl_Select : MonoBehaviour
     }
     public void OnClickFilter(int num)
     {
+        AudioManager.Instance.PlaySFX(Sound.Key.Click);
+
         for (int i = 0; i < filterButtons.Length; i++)
         {
             filterButtons[i].Highlight(i == num);

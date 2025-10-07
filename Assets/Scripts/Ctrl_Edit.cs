@@ -61,15 +61,18 @@ public class Ctrl_Edit : MonoBehaviour
 
         if (timer > timeLimit)
         {
-            OnClickHome();
+            UnityEngine.SceneManagement.SceneManager.LoadScene("01_Title");
         }
     }
     public void OnClickHome()
     {
+        AudioManager.Instance.PlaySFX(Sound.Key.Click);
         UnityEngine.SceneManagement.SceneManager.LoadScene("01_Title");
     }
     public void OnClickRetry()
     {
+        AudioManager.Instance.PlaySFX(Sound.Key.Click);
+
         StaticValues.filterNo = -1;
         StaticValues.editorDataRaw = null;
         UnityEngine.SceneManagement.SceneManager.LoadScene("02_Select");
